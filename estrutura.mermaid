@@ -7,6 +7,7 @@ erDiagram
         string genero
         string biografia
         string localizacao
+        string profissao
     }
     FOTO {
         int id PK
@@ -40,10 +41,21 @@ erDiagram
         int usuario_curtido_id FK
         datetime data_curtida
     }
+    GOSTO {
+        int id PK
+        string nome
+        string categoria
+    }
+    USUARIO_GOSTO {
+        int usuario_id FK
+        int gosto_id FK
+    }
 
     USUARIO ||--o{ FOTO : "possui"
     USUARIO ||--o{ MATCH : "participa"
     USUARIO ||--o{ MENSAGEM : "envia"
     USUARIO ||--o{ PREFERENCIA : "define"
     USUARIO ||--o{ CURTIDA : "realiza"
+    USUARIO ||--o{ USUARIO_GOSTO : "tem"
+    GOSTO ||--o{ USUARIO_GOSTO : "pertence a"
     MATCH ||--o{ MENSAGEM : "contém"
