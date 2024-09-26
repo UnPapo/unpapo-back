@@ -3,12 +3,20 @@ erDiagram
         int id PK
         string nome
         string email
-        string senha
+        string senha_hash
         date data_nascimento
         string genero
         string biografia
-        string localizacao
         string profissao
+        int localizacao_id FK
+    }
+    LOCALIZACAO {
+        int id PK
+        float latitude
+        float longitude
+        string cidade
+        string estado
+        string pais
     }
     FOTO {
         int id PK
@@ -52,6 +60,7 @@ erDiagram
         int gosto_id FK
     }
 
+    USUARIO ||--|| LOCALIZACAO : "tem"
     USUARIO ||--o{ FOTO : "possui"
     USUARIO ||--o{ MATCH : "participa"
     USUARIO ||--o{ MENSAGEM : "envia"
