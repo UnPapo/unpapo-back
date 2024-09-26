@@ -1,0 +1,51 @@
+# Estrutura do banco
+
+erDiagram
+    USUARIO {
+        int id PK
+        string nome
+        string email
+        date data_nascimento
+        string genero
+        string biografia
+        string localizacao
+    }
+    FOTO {
+        int id PK
+        int usuario_id FK
+        string url
+    }
+    MATCH {
+        int id PK
+        int usuario1_id FK
+        int usuario2_id FK
+        datetime data_match
+    }
+    MENSAGEM {
+        int id PK
+        int match_id FK
+        int remetente_id FK
+        string conteudo
+        datetime data_envio
+    }
+    PREFERENCIA {
+        int id PK
+        int usuario_id FK
+        string genero_preferido
+        int idade_min
+        int idade_max
+        int distancia_max
+    }
+    CURTIDA {
+        int id PK
+        int usuario_curtiu_id FK
+        int usuario_curtido_id FK
+        datetime data_curtida
+    }
+
+    USUARIO ||--o{ FOTO : "possui"
+    USUARIO ||--o{ MATCH : "participa"
+    USUARIO ||--o{ MENSAGEM : "envia"
+    USUARIO ||--o{ PREFERENCIA : "define"
+    USUARIO ||--o{ CURTIDA : "realiza"
+    MATCH ||--o{ MENSAGEM : "contém"
