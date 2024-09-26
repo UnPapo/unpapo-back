@@ -5,6 +5,7 @@ erDiagram
         string email
         string senha_hash
         date data_nascimento
+        boolean status
         string genero
         string biografia
         string profissao
@@ -16,16 +17,24 @@ erDiagram
         float longitude
         string cidade
         string estado
+        string pais
     }
     FOTO {
         int id PK
         int usuario_id FK
         string url
     }
+    CURTIDA {
+        int id PK
+        int usuario_curtiu_id FK
+        int usuario_curtido_id FK
+        datetime data_curtida
+        boolean match
+    }
     MATCH {
         int id PK
-        int usuario1_id FK
-        int usuario2_id FK
+        int curtida_id FK
+        boolean status
         datetime data_match
     }
     MENSAGEM {
@@ -43,12 +52,6 @@ erDiagram
         int idade_max
         int distancia_max
     }
-    CURTIDA {
-        int id PK
-        int usuario_curtiu_id FK
-        int usuario_curtido_id FK
-        datetime data_curtida
-    }
     GOSTO {
         int id PK
         string nome
@@ -61,10 +64,10 @@ erDiagram
 
     USUARIO ||--|| LOCALIZACAO : "tem"
     USUARIO ||--o{ FOTO : "possui"
-    USUARIO ||--o{ MATCH : "participa"
+    USUARIO ||--o{ CURTIDA : "realiza"
     USUARIO ||--o{ MENSAGEM : "envia"
     USUARIO ||--o{ PREFERENCIA : "define"
-    USUARIO ||--o{ CURTIDA : "realiza"
     USUARIO ||--o{ USUARIO_GOSTO : "tem"
     GOSTO ||--o{ USUARIO_GOSTO : "pertence a"
+    CURTIDA ||--o| MATCH : "gera"
     MATCH ||--o{ MENSAGEM : "contém"
