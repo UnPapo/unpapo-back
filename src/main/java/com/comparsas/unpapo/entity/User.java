@@ -4,10 +4,12 @@ import com.comparsas.unpapo.utils.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Data
-@Table(name = "person")
-public abstract class Person {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,13 +18,27 @@ public abstract class Person {
     @Column(name = "nome")
     private String name;
 
+    @Column(name = "senha")
+    private String password;
+
     @Column(name = "data_nascimento")
-    private Long birthDate;
+    private Date birthDate;
 
     @Column(name = "email")
     private String email;
 
     @Column(name = "genero")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(name = "biografia")
+    private String biography;
+
+    @Column(name = "workplace")
+    private String profissao;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "localizacao_id")
+    private Locations location;
 
 }
