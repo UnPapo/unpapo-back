@@ -5,6 +5,7 @@ import com.comparsas.unpapo.repository.UserRepository;
 import com.comparsas.unpapo.utils.models.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -24,7 +25,9 @@ public class UserService {
 
         userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
                 it -> userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe!."),
-                () -> userApiResponse.of(HttpStatus.OK, "Usuário criado com sucesso!", userRepository.save(user))
+                () -> {
+                    userApiResponse.of(HttpStatus.OK, "Usuário criado com sucesso!", userRepository.save(user));
+                }
         );
 
         return userApiResponse;

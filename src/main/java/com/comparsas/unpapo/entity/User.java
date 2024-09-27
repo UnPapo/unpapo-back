@@ -21,6 +21,9 @@ public class User {
     @Column(name = "senha")
     private String password;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @Column(name = "data_nascimento")
     private Date birthDate;
 
