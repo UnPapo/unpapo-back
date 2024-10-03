@@ -42,6 +42,6 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "localizacao_id")
-    private Locations location;
+    private Location location;
 
 }
