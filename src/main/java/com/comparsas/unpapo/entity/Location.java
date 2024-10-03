@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "locations")
-public class Locations {
+@Table(name = "location")
+public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,4 +23,12 @@ public class Locations {
 
     @Column(name = "estado")
     private String state;
+
+    @Column(name = "pais")
+    private String country;
+
+    public boolean isValid() {
+        return this.latitude != null && this.longitude != null && this.city != null
+                && this.state != null && this.country != null;
+    }
 }

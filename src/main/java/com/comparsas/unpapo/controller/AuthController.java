@@ -4,6 +4,7 @@ import com.comparsas.unpapo.entity.User;
 import com.comparsas.unpapo.repository.UserRepository;
 import com.comparsas.unpapo.service.UserService;
 import com.comparsas.unpapo.utils.UserMapper;
+import com.comparsas.unpapo.utils.dtos.TokenDTO;
 import com.comparsas.unpapo.utils.dtos.UserLoginDTO;
 import com.comparsas.unpapo.utils.dtos.UserRegisterDTO;
 import com.comparsas.unpapo.utils.models.ApiResponse;
@@ -28,11 +29,13 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<ApiResponse<TokenDTO>> login(@RequestBody UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmail(userLoginDTO.email()).orElseThrow(() -> new RuntimeException("Usuário nao encontrado."));
-        ApiResponse<String> apiResponse = new ApiResponse<>();
+        ApiResponse<TokenDTO> apiResponse = new ApiResponse<>();
         if(passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
-            String token = tokenService.generateToken(user);
+
+            TokenDTO token = new TokenDTO(tokenService.generateToken(user));
+
             return ResponseEntity.ok(apiResponse.of(HttpStatus.OK, "Login efetuado com sucesso!", token));
         }
         return ResponseEntity.badRequest().build();
@@ -45,7 +48,7 @@ public class AuthController {
 
         ApiResponse<User> userApiResponse = userService.createUser(user);
 
-        String token = tokenService.generateToken(user);
+        TokenDTO token = new TokenDTO(tokenService.generateToken(user));
         return ResponseEntity.status(userApiResponse.getStatus()).body(userApiResponse);
     }
 

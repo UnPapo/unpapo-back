@@ -8,11 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService{
 
     private final UserRepository userRepository;
 
@@ -24,9 +25,9 @@ public class UserService {
         }
 
         userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
-                it -> userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe!."),
+                it -> userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe! Email já cadastrado."),
                 () -> {
-                    userApiResponse.of(HttpStatus.OK, "Usuário criado com sucesso!", userRepository.save(user));
+                    userApiResponse.of(HttpStatus.CREATED, "Usuário criado com sucesso!", userRepository.save(user));
                 }
         );
 
@@ -56,4 +57,9 @@ public class UserService {
         return userApiResponse;
     }
 
+    public ApiResponse<List<User>> getAllUsers() {
+        ApiResponse<List<User>> userApiResponse = new ApiResponse<>();
+
+        return userApiResponse.of(HttpStatus.OK , userRepository.findAll());
+    }
 }
