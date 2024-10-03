@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService{
 
     private final UserRepository userRepository;
 
@@ -26,7 +26,7 @@ public class UserService {
         userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
                 it -> userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe!."),
                 () -> {
-                    userApiResponse.of(HttpStatus.OK, "Usuário criado com sucesso!", userRepository.save(user));
+                    userApiResponse.of(HttpStatus.CREATED, "Usuário criado com sucesso!", userRepository.save(user));
                 }
         );
 
