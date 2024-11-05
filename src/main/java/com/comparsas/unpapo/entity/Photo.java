@@ -5,11 +5,13 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "foto")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "url")
     private String url;
 
     @ManyToOne(cascade = CascadeType.ALL)
