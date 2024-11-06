@@ -1,6 +1,7 @@
 package com.comparsas.unpapo.service;
 
 import com.comparsas.unpapo.entity.User;
+import com.comparsas.unpapo.repository.LocationRepository;
 import com.comparsas.unpapo.repository.UserRepository;
 import com.comparsas.unpapo.utils.models.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,18 @@ import java.util.Objects;
 public class UserService{
 
     private final UserRepository userRepository;
+    private final LocationRepository locationRepository;
 
     public ApiResponse<User> createUser(User user) throws Exception {
         ApiResponse<User> userApiResponse = new ApiResponse<>();
 
-        if(Objects.isNull(user.getName()) || Objects.isNull(user.getPassword())) {
-            throw new Exception("Nome ou senha do usuário não podem ser vazios.");
+        if (user.getLocation() != null && user.getLocation().getId() == null) {
+            // Persiste a Location antes de persistir o Usuario
+            locationRepository.save(user.getLocation());
+        }
+
+        if(Objects.isNull(user.getName())) {
+            throw new Exception("Nome do usuário não pode ser vazios.");
         }
 
         userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
