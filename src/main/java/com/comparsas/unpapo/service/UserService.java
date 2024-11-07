@@ -29,7 +29,7 @@ public class UserService{
             locationRepository.save(user.getLocation());
         }
 
-        if(!user.getPhotos().isEmpty()) {
+        if(user.getPhotos() != null && !user.getPhotos().isEmpty()) {
             List<Photo> photos = new ArrayList<>();
             for (Photo photoUSer : user.getPhotos()) {
                 photoUSer.setUser(user);  // Associe cada foto ao usuário
