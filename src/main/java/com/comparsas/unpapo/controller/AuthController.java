@@ -44,6 +44,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         User user = UserMapper.toEntity(userRegisterDTO);
+
+        if(userRegisterDTO.password() == null || userRegisterDTO.password().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         ApiResponse<User> userApiResponse = userService.createUser(user);

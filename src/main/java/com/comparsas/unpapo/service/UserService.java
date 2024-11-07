@@ -1,5 +1,6 @@
 package com.comparsas.unpapo.service;
 
+import com.comparsas.unpapo.entity.Photo;
 import com.comparsas.unpapo.entity.User;
 import com.comparsas.unpapo.repository.LocationRepository;
 import com.comparsas.unpapo.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,14 +29,25 @@ public class UserService{
             locationRepository.save(user.getLocation());
         }
 
+        if(!user.getPhotos().isEmpty()) {
+            List<Photo> photos = new ArrayList<>();
+            for (Photo photoUSer : user.getPhotos()) {
+                photoUSer.setUser(user);  // Associe cada foto ao usuário
+                photos.add(photoUSer);
+            }
+        }
+
         if(Objects.isNull(user.getName())) {
             throw new Exception("Nome do usuário não pode ser vazios.");
         }
 
         userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
-                it -> userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe! Email já cadastrado."),
+                it -> {
+                    userApiResponse.of(HttpStatus.BAD_REQUEST, "Usuário já existe! Email já cadastrado.");
+                },
                 () -> {
-                    userApiResponse.of(HttpStatus.CREATED, "Usuário criado com sucesso!", userRepository.save(user));
+                    userRepository.save(user);
+                    userApiResponse.of(HttpStatus.CREATED, "Usuário criado com sucesso!");
                 }
         );
 

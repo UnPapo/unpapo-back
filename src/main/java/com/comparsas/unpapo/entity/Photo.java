@@ -11,7 +11,7 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "url")
+    @Column(name = "url", columnDefinition = "TEXT")
     private String url;
 
     @ManyToOne(cascade = CascadeType.ALL)

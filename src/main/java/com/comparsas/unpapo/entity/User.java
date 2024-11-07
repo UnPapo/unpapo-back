@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -39,6 +40,9 @@ public class User {
 
     @Column(name = "workplace")
     private String profissao;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Photo> photos;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "localizacao_id")

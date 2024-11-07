@@ -3,7 +3,6 @@ package com.comparsas.unpapo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 
