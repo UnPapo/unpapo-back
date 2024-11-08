@@ -1,4 +1,6 @@
 package com.comparsas.unpapo.utils.dtos;
 
-public record TokenDTO(String token) {
+import com.comparsas.unpapo.entity.User;
+
+public record TokenDTO(String token, User user) {
 }

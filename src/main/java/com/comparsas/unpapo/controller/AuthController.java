@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -34,7 +36,8 @@ public class AuthController {
         ApiResponse<TokenDTO> apiResponse = new ApiResponse<>();
         if(passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
 
-            TokenDTO token = new TokenDTO(tokenService.generateToken(user));
+            TokenDTO token = new TokenDTO(tokenService.generateToken(user), user);
+
 
             return ResponseEntity.ok(apiResponse.of(HttpStatus.OK, "Login efetuado com sucesso!", token));
         }
@@ -53,7 +56,6 @@ public class AuthController {
 
         ApiResponse<User> userApiResponse = userService.createUser(user);
 
-        TokenDTO token = new TokenDTO(tokenService.generateToken(user));
         return ResponseEntity.status(userApiResponse.getStatus()).body(userApiResponse);
     }
 
