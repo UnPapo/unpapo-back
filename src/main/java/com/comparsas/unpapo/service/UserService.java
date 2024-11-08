@@ -3,6 +3,7 @@ package com.comparsas.unpapo.service;
 import com.comparsas.unpapo.entity.Photo;
 import com.comparsas.unpapo.entity.User;
 import com.comparsas.unpapo.repository.LocationRepository;
+import com.comparsas.unpapo.repository.PhotoRepository;
 import com.comparsas.unpapo.repository.UserRepository;
 import com.comparsas.unpapo.utils.models.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +32,11 @@ public class UserService{
         }
 
         if(user.getPhotos() != null && !user.getPhotos().isEmpty()) {
-            List<Photo> photos = new ArrayList<>();
-            for (Photo photoUSer : user.getPhotos()) {
-                photoUSer.setUser(user);  // Associe cada foto ao usuário
-                photos.add(photoUSer);
-            }
+            List<Photo> updatedPhotos = user.getPhotos().stream()
+                    .peek(photo -> photo.setUserId(user))
+                    .collect(Collectors.toList());
+
+            user.setPhotos(updatedPhotos);
         }
 
         if(Objects.isNull(user.getName())) {

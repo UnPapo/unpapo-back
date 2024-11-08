@@ -41,7 +41,7 @@ public class User {
     @Column(name = "workplace")
     private String profissao;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Photo> photos;
 
     @OneToOne(cascade = CascadeType.ALL)

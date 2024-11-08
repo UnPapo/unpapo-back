@@ -1,5 +1,6 @@
 package com.comparsas.unpapo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,5 +17,6 @@ public class Photo {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
-    private User user;
+    @JsonIgnore
+    private User userId;
 }
